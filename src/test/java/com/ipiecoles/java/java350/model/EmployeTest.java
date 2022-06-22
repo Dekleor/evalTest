@@ -96,44 +96,11 @@ public class EmployeTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "'M12345',0,1,1.0,11",
-            "'M12345',2,1,1.0,11",
-            "'M12345',0,2,1.0,11",
-            "'M12345',0,1,0.5,6",
-            "'C12345',0,1,1.0,11",
-            "'C12345',5,1,1.0,11",
-            "'C12345',2,1,1.0,11",
-            "'C12345',0,2,1.0,11",
-            "'C12345',3,2,1.0,11",
-            "'C12345',0,1,0.5,6",
-            ",0,1,1.0,11",
-            "'C12345',0,,1.0,11"
-
-    })
-    public void testGetNbRtt(
-            String matricule,
-            Integer nbAnneesAnciennete,
-            Integer performance,
-            Double tauxActivite,
-            Integer nbRttAttendu
-    ){
-        //Given
-        LocalDate d = LocalDate.now();
-        Employe employe = new Employe("Manage","Manager",matricule,LocalDate.now().minusYears(nbAnneesAnciennete),2500d,performance,tauxActivite);
-
-        //When
-        Integer nbRtt = employe.getNbRtt(d);
-        //Then
-        Assertions.assertThat(nbRtt).isEqualTo(nbRttAttendu);
-    }
-
-    @ParameterizedTest
     @CsvSource( {
             "-10, 1800",
             "-60, 800"
     })
-    public void testAugmenterSalaireError(double pourcentage, double newSalary) throws EmployeException
+    public void testAugmenterSalaireError(double pourcentage, double expectedSalary) throws EmployeException
     {
         //Given
         Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
@@ -156,7 +123,7 @@ public class EmployeTest {
             "40, 2800",
             "50, 3000"
     })
-    public void testAugmenterSalaireWithoutError(double pourcentage, double newSalary) throws EmployeException {
+    public void testAugmenterSalaireWithoutError(double pourcentage, double expectedSalary) throws EmployeException {
         //Given
         Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
 
@@ -164,6 +131,24 @@ public class EmployeTest {
         employe.augmenterSalaire(pourcentage);
 
         //Then
-        Assertions.assertThat(employe.getSalaire()).isEqualTo(newSalary);
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(expectedSalary);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2019-01-01, 9",
+            "2021-01-01, 11",
+            "2022-01-01, 11",
+            "2032-01-01, 10"
+    })
+    public void testGetNbRtt(LocalDate date, int expectedRtt){
+        //Given
+        Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
+
+        //When
+        employe.getNbRtt(date);
+
+        //Then
+        Assertions.assertThat(employe.getNbRtt(date)).isEqualTo(expectedRtt);
     }
 }
