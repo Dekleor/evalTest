@@ -1,2 +1,6 @@
 22-06-2022 14:48:37.961 ERROR c.i.j.java350.service.EmployeService.embaucheEmploye - Limite des 100000 matricules atteinte !
 22-06-2022 14:48:37.965 ERROR c.i.j.java350.service.EmployeService.embaucheEmploye - L'employé de matricule C00001 existe déjà en BDD
+22-06-2022 15:23:22.455 ERROR c.i.j.java350.service.EmployeService.embaucheEmploye - Limite des 100000 matricules atteinte !
+22-06-2022 15:23:22.458 ERROR c.i.j.java350.service.EmployeService.embaucheEmploye - L'employé de matricule C00001 existe déjà en BDD
+22-06-2022 15:23:42.378 ERROR c.i.j.java350.service.EmployeService.embaucheEmploye - L'employé de matricule C00001 existe déjà en BDD
+22-06-2022 15:23:42.384 ERROR c.i.j.java350.service.EmployeService.embaucheEmploye - Limite des 100000 matricules atteinte !

@@ -128,24 +128,42 @@ public class EmployeTest {
         Assertions.assertThat(nbRtt).isEqualTo(nbRttAttendu);
     }
 
-//    @ParameterizedTest
-//    @CsvSource( {
-//            "10",
-//            "20",
-//            "30",
-//            "40",
-//            "50",
-//            "60",
-//    })
-//    public void testAugmenterSalaire(
-//            double pourcentage
-//    ) throws EmployeException {
-//        //Given
-//        Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
-//
-//        //When
-//        double newSalary = employe.augmenterSalaire(pourcentage);
-//
-//        //Then
-//    }
+    @ParameterizedTest
+    @CsvSource( {
+            "-10, 1800",
+            "-60, 800"
+    })
+    public void testAugmenterSalaireError(double pourcentage, double newSalary) throws EmployeException
+    {
+        //Given
+        Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
+
+        //When
+        Throwable thrown = Assertions.catchThrowable(()-> {
+           employe.augmenterSalaire(pourcentage);
+        });
+
+        //Then
+        Assertions.assertThat(thrown).isInstanceOf(EmployeException.class).hasMessageContaining("Il est illégal de faire baisser le salaire");
+    }
+
+    @ParameterizedTest
+    @CsvSource( {
+            "0, 2000",
+            "10, 2200",
+            "20, 2400",
+            "30, 2600",
+            "40, 2800",
+            "50, 3000"
+    })
+    public void testAugmenterSalaireWithoutError(double pourcentage, double newSalary) throws EmployeException {
+        //Given
+        Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
+
+        //When
+        employe.augmenterSalaire(pourcentage);
+
+        //Then
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(newSalary);
+    }
 }
