@@ -100,7 +100,7 @@ public class EmployeTest {
             "-10, 1800",
             "-60, 800"
     })
-    public void testAugmenterSalaireError(double pourcentage, double expectedSalary) throws EmployeException
+    void testAugmenterSalaireError(double pourcentage, double expectedSalary) throws EmployeException
     {
         //Given
         Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
@@ -123,7 +123,7 @@ public class EmployeTest {
             "40, 2800",
             "50, 3000"
     })
-    public void testAugmenterSalaireWithoutError(double pourcentage, double expectedSalary) throws EmployeException {
+    void testAugmenterSalaireWithoutError(double pourcentage, double expectedSalary) throws EmployeException {
         //Given
         Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
 
@@ -136,14 +136,15 @@ public class EmployeTest {
 
     @ParameterizedTest
     @CsvSource({
-            "2019-01-01, 9",
-            "2021-01-01, 11",
-            "2022-01-01, 11",
-            "2032-01-01, 10"
+            "2019-01-01, 9, 1.0",
+            "2021-01-01, 11, 1.0",
+            "2022-01-01, 6, 0.5",
+            "2032-01-01, 5, 0.5",
+            "2044-01-01, 9, 1.0"
     })
-    public void testGetNbRtt(LocalDate date, int expectedRtt){
+    void testGetNbRtt(LocalDate date, int expectedRtt, double tempsPartiel){
         //Given
-        Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, 1.0);
+        Employe employe = new Employe("Doe", "John", "C123456", LocalDate.now(), 2000d, 1, tempsPartiel);
 
         //When
         employe.getNbRtt(date);
