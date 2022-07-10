@@ -56,7 +56,7 @@ class EmployeServiceIntegrationTest {
         Employe commercial = new Employe("Doe", "John", "C00001", LocalDate.now(), 2500d, 2, 1.0);
         employeRepository.save(commercial);
         Long caTraite = 987654321L;
-        Long objectifCa = 123456789L;
+        Long objectifCa = 987132456L;
 
         // when
         employeService.calculPerformanceCommercial(commercial.getMatricule(), caTraite, objectifCa);
@@ -68,5 +68,23 @@ class EmployeServiceIntegrationTest {
         Assertions.assertThat(objectifCa).isPositive().isNotNull();
         Assertions.assertThat(employeTest.getMatricule()).isNotNull();
         Assertions.assertThat(employeTest.getMatricule()).startsWith("C");
+
+        Assertions.assertThat(caTraite).isGreaterThanOrEqualTo((long) (objectifCa*0.8)).isLessThan((long) (objectifCa*0.95)).isGreaterThanOrEqualTo((long) (objectifCa*0.95)).isLessThanOrEqualTo((long) (objectifCa*1.05)).isLessThanOrEqualTo((long) (objectifCa*1.2)).isGreaterThan((long) (objectifCa*1.05)).isGreaterThanOrEqualTo((long) (objectifCa*1.2));
+    }
+
+    @Test
+    void testAvgPerformanceWhereMatriculeStartsWith() throws EmployeException {
+        // given
+        Employe commercial = new Employe("Doe", "John", "C00001", LocalDate.now(), 2500d, 2, 1.0);
+        employeRepository.save(commercial);
+        int perfMoyenne = 1;
+
+        //when
+        employeRepository.avgPerformanceWhereMatriculeStartsWith("c");
+
+        // then
+        Employe employeTest = employeRepository.findByMatricule("C00001");
+        Assertions.assertThat(employeRepository.findLastMatricule()).isEqualTo("00001");
+        Assertions.assertThat(perfMoyenne).isLessThan(employeTest.getPerformance());
     }
 }
