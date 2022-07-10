@@ -65,7 +65,7 @@ public class Employe {
     }
 
     public Integer getNbRtt(LocalDate d) {
-        int daysPerYear = d.isLeapYear() ? 365 : 366;
+        int daysPerYear = d.isLeapYear() ? 366 : 365;
         int satsAndSuns = 104;
         switch (LocalDate.of(d.getYear(), 1, 1).getDayOfWeek()) {
             case THURSDAY:

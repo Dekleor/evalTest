@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
 @SpringBootTest
-public class EmployeServiceIntegrationTest {
+class EmployeServiceIntegrationTest {
 
     @Autowired
     EmployeService employeService;
@@ -32,7 +32,7 @@ public class EmployeServiceIntegrationTest {
     }
 
     @Test
-    public void testEmbaucheEmployeWith1Employe() throws EmployeException {
+    void testEmbaucheEmployeWith1Employe() throws EmployeException {
         //given
         Employe manager = new Employe("BESIAT","Ivan","M00001", LocalDate.now(),2500d,2,1.0);
         employeRepository.save(manager);
@@ -48,5 +48,25 @@ public class EmployeServiceIntegrationTest {
         Assertions.assertThat(employeTest.getPerformance()).isEqualTo(Entreprise.PERFORMANCE_BASE);
         Assertions.assertThat(employeTest.getDateEmbauche()).isEqualTo(LocalDate.now());
         Assertions.assertThat(employeTest.getTempsPartiel()).isEqualTo((0.5));
+    }
+
+    @Test
+    void testCalculPerformanceCommercial() throws EmployeException {
+        // given
+        Employe commercial = new Employe("Doe", "John", "C00001", LocalDate.now(), 2500d, 2, 1.0);
+        employeRepository.save(commercial);
+        Long caTraite = 987654321L;
+        Long objectifCa = 123456789L;
+
+        // when
+        employeService.calculPerformanceCommercial(commercial.getMatricule(), caTraite, objectifCa);
+
+        // then
+        Employe employeTest = employeRepository.findByMatricule("C00001");
+        Assertions.assertThat(employeRepository.findLastMatricule()).isEqualTo("00001");
+        Assertions.assertThat(caTraite).isPositive().isNotNull();
+        Assertions.assertThat(objectifCa).isPositive().isNotNull();
+        Assertions.assertThat(employeTest.getMatricule()).isNotNull();
+        Assertions.assertThat(employeTest.getMatricule()).startsWith("C");
     }
 }
