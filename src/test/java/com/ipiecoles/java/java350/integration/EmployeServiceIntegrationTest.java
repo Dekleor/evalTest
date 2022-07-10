@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @SpringBootTest
 class EmployeServiceIntegrationTest {
@@ -66,8 +67,7 @@ class EmployeServiceIntegrationTest {
         Assertions.assertThat(employeRepository.findLastMatricule()).isEqualTo("00001");
         Assertions.assertThat(caTraite).isPositive().isNotNull();
         Assertions.assertThat(objectifCa).isPositive().isNotNull();
-        Assertions.assertThat(employeTest.getMatricule()).isNotNull();
-        Assertions.assertThat(employeTest.getMatricule()).startsWith("C");
+        Assertions.assertThat(employeTest.getMatricule()).isNotNull().startsWith("C");
 
         //Assertions.assertThat(caTraite).isGreaterThanOrEqualTo((long) (objectifCa*0.8)).isLessThan((long) (objectifCa*0.95)).isGreaterThanOrEqualTo((long) (objectifCa*0.95)).isLessThanOrEqualTo((long) (objectifCa*1.05)).isLessThanOrEqualTo((long) (objectifCa*1.2)).isGreaterThan((long) (objectifCa*1.05)).isGreaterThanOrEqualTo((long) (objectifCa*1.2));
     }
@@ -75,16 +75,20 @@ class EmployeServiceIntegrationTest {
     @Test
     void testAvgPerformanceWhereMatriculeStartsWith() throws EmployeException {
         // given
-        Employe commercial = new Employe("Doe", "John", "C00001", LocalDate.now(), 2500d, 2, 1.0);
-        employeRepository.save(commercial);
-        int perfMoyenne = 1;
+        Employe commercial1 = new Employe("Doe", "John", "C00001", LocalDate.now(), 2500d, 2, 1.0);
+        Employe commercial2 = new Employe("Doe", "John", "C00002", LocalDate.now(), 2500d, 1, 1.0);
+        Employe commercial3 = new Employe("Doe", "John", "C00003", LocalDate.now(), 2500d, 3, 1.0);
+        Employe commercial4 = new Employe("Doe", "John", "C00004", LocalDate.now(), 2500d, 1, 1.0);
+        Employe commercial5 = new Employe("Doe", "John", "C00005", LocalDate.now(), 2500d, 2, 1.0);
+        Employe commercial6 = new Employe("Doe", "John", "C00006", LocalDate.now(), 2500d, 3, 1.0);
+        employeRepository.saveAll(Arrays.asList(commercial1, commercial2, commercial3, commercial4, commercial5, commercial6));
 
         //when
-        employeRepository.avgPerformanceWhereMatriculeStartsWith("c");
+        double perfMoyenne = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
 
         // then
-        Employe employeTest = employeRepository.findByMatricule("C00001");
-        Assertions.assertThat(employeRepository.findLastMatricule()).isEqualTo("00001");
-        Assertions.assertThat(perfMoyenne).isLessThan(employeTest.getPerformance());
+        Employe employeTest = employeRepository.findByMatricule("C00006");
+        Assertions.assertThat(employeRepository.findLastMatricule()).isEqualTo("00006");
+        Assertions.assertThat(perfMoyenne).isEqualTo(2);
     }
 }
