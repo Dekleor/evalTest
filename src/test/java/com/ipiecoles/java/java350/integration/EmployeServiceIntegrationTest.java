@@ -69,7 +69,7 @@ class EmployeServiceIntegrationTest {
         Assertions.assertThat(employeTest.getMatricule()).isNotNull();
         Assertions.assertThat(employeTest.getMatricule()).startsWith("C");
 
-        Assertions.assertThat(caTraite).isGreaterThanOrEqualTo((long) (objectifCa*0.8)).isLessThan((long) (objectifCa*0.95)).isGreaterThanOrEqualTo((long) (objectifCa*0.95)).isLessThanOrEqualTo((long) (objectifCa*1.05)).isLessThanOrEqualTo((long) (objectifCa*1.2)).isGreaterThan((long) (objectifCa*1.05)).isGreaterThanOrEqualTo((long) (objectifCa*1.2));
+        //Assertions.assertThat(caTraite).isGreaterThanOrEqualTo((long) (objectifCa*0.8)).isLessThan((long) (objectifCa*0.95)).isGreaterThanOrEqualTo((long) (objectifCa*0.95)).isLessThanOrEqualTo((long) (objectifCa*1.05)).isLessThanOrEqualTo((long) (objectifCa*1.2)).isGreaterThan((long) (objectifCa*1.05)).isGreaterThanOrEqualTo((long) (objectifCa*1.2));
     }
 
     @Test
